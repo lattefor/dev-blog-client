@@ -1,8 +1,10 @@
+import classes from "./styles.module.css";
+
 export default function Contact() {
     return (
-        <div className="contact">
+        <div className={classes.wrapper}>
             <h1>Contact</h1>
-            <p>XXXXXXXXXXXXXXXXXXX</p>
+            <p>Contact info goes here....</p>
         </div>
     )           
 }
