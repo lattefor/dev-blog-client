@@ -1,0 +1,30 @@
+.wrapper {
+    padding: 30px
+}
+
+.formWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 400px;
+    color: forestgreen;
+}
+
+.formWrapper > * {
+    border-radius: 8px;
+}
+
+.formWrapper > .description {
+    min-height: 120px;
+    padding: 8px;
+}
+
+.formWrapper > button {
+    min-height: 24px;
+    padding: 8px;
+}
+
+.formWrapper > input {
+    min-height: 24px;
+    padding: 8px;
+}

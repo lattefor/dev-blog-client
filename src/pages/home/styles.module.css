@@ -1,0 +1,48 @@
+
+.wrapper {
+    padding: 30px;
+}
+
+.blogList{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.blogList .container {
+    padding: 10px;
+    border: 1px solid rgb(3, 110, 28);
+    background-color: rgb(245, 239, 231);
+    border-radius: 8px;
+}
+
+.container > h2 {
+    color:rgb(72, 78, 73);
+    min-width: 200px;
+}
+
+.container > .description {
+    border: none;
+    /* Add margin bottom to prevent overlap with actions */
+    margin-bottom: 40px;
+    color: rgb(9, 92, 9);
+
+}
+
+.blogList > .container {
+    /* Add position relative to parent div */
+    position: relative;
+}
+
+.container .actions {
+    border: none;
+    margin: 0;
+    display: flex;
+    gap: 10px;
+    /* Position actions at bottom */
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+    color:rgb(72, 78, 73);
+}
