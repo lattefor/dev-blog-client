@@ -1,70 +1,150 @@
-# Getting Started with Create React App
+# MERN Stack Blog - Client Side
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A modern React-based blog application client that provides a clean interface for creating, reading, updating, and deleting blog posts.
 
-## Available Scripts
+## 🚀 Tech Stack
 
-In the project directory, you can run:
+- **React 19.1.0** - Frontend framework
+- **React Router DOM 7.6.2** - Client-side routing
+- **Axios 1.10.0** - HTTP client for API requests
+- **React Icons 5.5.0** - Icon library
+- **CSS Modules** - Scoped styling
+- **Create React App** - Build tooling
 
-### `npm start`
+## 📁 Project Structure
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+```
+client/
+├── public/                 # Static assets
+├── src/
+│   ├── components/         # Reusable components
+│   │   └── header/         # Navigation header
+│   ├── context/           # Global state management
+│   ├── pages/             # Route components
+│   │   ├── home/          # Blog list view
+│   │   ├── add-blog/      # Create/Edit blog form
+│   │   └── contact/       # Contact page
+│   ├── App.js             # Main app component
+│   └── index.js           # App entry point
+├── package.json
+└── README.md
+```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 🔄 Data Flow
 
-### `npm test`
+### State Management
+- **Global Context** (`src/context/index.jsx`) manages application-wide state:
+  - `formData` - Blog form inputs (title, description)
+  - `blogList` - Array of blog posts
+  - `pending` - Loading state
+  - `isEdit` - Edit mode flag
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### API Integration
+- **Base URL**: `http://localhost:5011/api/blogs/`
+- **Endpoints**:
+  - `GET /` - Fetch all blogs
+  - `POST /add` - Create new blog
+  - `PUT /update/:id` - Update existing blog
+  - `DELETE /delete/:id` - Delete blog
 
-### `npm run build`
+### Component Flow
+1. **Header** - Navigation between pages
+2. **Home** - Displays blog list with edit/delete actions
+3. **Add Blog** - Form for creating/editing blogs
+4. **Contact** - Static contact information
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 🛠️ Setup & Installation
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Prerequisites
+- Node.js (v14 or higher)
+- npm or yarn
+- Backend server running on port 5011
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Installation Steps
 
-### `npm run eject`
+1. **Clone and navigate to client directory**
+   ```bash
+   cd client
+   ```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+3. **Start development server**
+   ```bash
+   npm start
+   ```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+4. **Open browser**
+   - Application runs on `http://localhost:3000`
+   - Ensure backend server is running on `http://localhost:5011`
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## 📜 Available Scripts
 
-## Learn More
+- `npm start` - Start development server
+- `npm build` - Build for production
+- `npm test` - Run test suite
+- `npm run analyze` - Analyze bundle size
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## 🌐 Routes
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- `/` - Home page (blog list)
+- `/add-blog` - Create new blog or edit existing
+- `/contact` - Contact information
 
-### Code Splitting
+## 🔧 Key Features
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### Blog Management
+- **Create** - Add new blog posts with title and description
+- **Read** - View all blogs in a responsive list
+- **Update** - Edit existing blogs inline
+- **Delete** - Remove blogs with confirmation
 
-### Analyzing the Bundle Size
+### User Experience
+- Loading states during API calls
+- Form validation and error handling
+- Responsive design with CSS modules
+- Icon-based actions (edit/delete)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## 🔗 Backend Integration
 
-### Making a Progressive Web App
+The client expects a REST API backend with the following contract:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+```javascript
+// GET /api/blogs/ - Returns array of blogs
+[
+  {
+    _id: "string",
+    title: "string", 
+    description: "string"
+  }
+]
 
-### Advanced Configuration
+// POST /api/blogs/add - Create blog
+// PUT /api/blogs/update/:id - Update blog
+// DELETE /api/blogs/delete/:id - Delete blog
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## 🎨 Styling
 
-### Deployment
+- **CSS Modules** for component-scoped styles
+- **Responsive design** for mobile and desktop
+- **Clean, minimal UI** with focus on readability
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## 🚀 Production Build
 
-### `npm run build` fails to minify
+```bash
+npm run build
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Creates optimized production build in `build/` directory ready for deployment.
+
+## 📝 Development Notes
+
+- Uses React 19 with latest features
+- Context API for state management (no Redux needed)
+- Functional components with hooks
+- Modern ES6+ JavaScript syntax
+- Error boundaries and loading states implemented
