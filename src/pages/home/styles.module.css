@@ -11,7 +11,7 @@
 
 .blogList .container {
     padding: 10px;
-    border: 1px solid rgb(232, 114, 224);
+    border: 5px solid rgb(234, 149, 229);
     background-color: rgb(245, 239, 231);
     border-radius: 8px;
     color: rgb(45, 53, 45);
@@ -30,6 +30,10 @@
 .blogList > .container {
     /* Add position relative to parent div */
     position: relative;
+}
+
+.blogList > .container:hover {
+   border: 5px solid rgb(213, 209, 13);
 }
 
 .container .actions {

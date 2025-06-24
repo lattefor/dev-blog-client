@@ -4,6 +4,8 @@
     --button-bg : #000;
     --button-text : #fff;
     margin: 0px;
+    font-family:'Courier New', Courier, monospace;
+    --text-primary-hover : rgb(161, 39, 110);
 }
 
 [data-theme='dark'] {
@@ -11,6 +13,7 @@
     --text-primary : #fff;
     --button-bg : #fff;
     --button-text : #000;
+    --text-primary-hover : rgb(212, 177, 202);
 }
 
 .dark-light-mode {
@@ -50,7 +53,17 @@ h1, h2 { margin-top: 0; }
    to the header-container to push items to opposite ends */
 .header-container {
     display: flex;
-    justify-content: space-between; /* This will push the button to the right */
+    justify-content: space-between;
+    text-decoration: none;
+}
+
+.header-container li {
+    color: var(--text-primary);
+    text-decoration: none;
+}
+
+.header-container li:hover {
+    color: var(--text-primary-hover);
 }
 
 .header-container > button {

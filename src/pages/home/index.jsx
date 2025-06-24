@@ -14,7 +14,13 @@ export default function Home() {
   async function fetchListOfBlogs() {
     try {
       setPending(true);
-      const response = await axios.get("http://localhost:5011/api/blogs/");
+      // To use environment variables in React:
+      // 1. Create a file named .env in your project root
+      // 2. Add REACT_APP_ prefix to your variables: REACT_APP_API_BASE_URL=http://localhost:5011/api/blogs/
+      // 3. Restart your development server after creating/modifying .env
+      // 4. Access using process.env.REACT_APP_API_BASE_URL
+      // Note: Only variables prefixed with REACT_APP_ will be exposed to your application
+      const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}`); 
       const results = response.data;
 
       if (results && Array.isArray(results)) {
@@ -37,7 +43,7 @@ export default function Home() {
   async function handleDeleteBlog( getCurrentId ) {
     try {
       console.log("What is the ID: ", getCurrentId);
-      const response = await axios.delete(`http://localhost:5011/api/blogs/delete/${getCurrentId}`);
+      const response = await axios.delete(`${process.env.REACT_APP_API_BASE_URL}delete/${getCurrentId}`);
       const result = response.data;
 
       if (result?.message) {
