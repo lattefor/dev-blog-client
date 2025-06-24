@@ -1,15 +1,66 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+:root {
+    --background : #ffffff;
+    --text-primary : #000;
+    --button-bg : #000;
+    --button-text : #fff;
+    margin: 0px;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+[data-theme='dark'] {
+    --background : #000;
+    --text-primary : #fff;
+    --button-bg : #fff;
+    --button-text : #000;
+}
+
+.dark-light-mode {
+    background-color: var(--background);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+  
+    font-size: 20px;
+    transition: all 0.5s;
+}
+
+.dark-light-mode .container  {
+    color: var(--text-primary);
+    margin: 0px;
+
+}
+
+.dark-light-mode .container p {
+   /* background-color: var(--text-primary); */
+    font-size: 16px;
+}
+
+
+
+.dark-light-mode .container button {
+    background-color: var(--button-bg);
+    color: var(--button-text);
+    border: 1px solid var(--button-text);
+    border-radius: 8px;
+    padding: 20px;
 }
 
 h1, h2 { margin-top: 0; }
+
+/* The button doesn't stay on the far right because we need to add justify-content: space-between 
+   to the header-container to push items to opposite ends */
+.header-container {
+    display: flex;
+    justify-content: space-between; /* This will push the button to the right */
+}
+
+.header-container > button {
+    flex-flow: row;
+    margin: auto 0;
+    height: 60px;
+    align-self: center;
+    margin-right: 20px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

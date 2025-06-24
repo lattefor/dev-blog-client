@@ -57,7 +57,7 @@ export default function Home() {
 
   return (
     <div className={classes.wrapper}>
-      <h1>Blog List</h1>
+      <h1>Add Sort Here</h1>
       {pending ? (
         <p>Loading...</p>
       ) : blogList && blogList.length ? (
