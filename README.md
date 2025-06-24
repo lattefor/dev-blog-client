@@ -102,6 +102,12 @@ client/
 - **Update** - Edit existing blogs inline
 - **Delete** - Remove blogs with confirmation
 
+### Theme Switch Feature
+- Added dark/light mode toggle
+- Implemented localStorage persistence
+- Used CSS custom properties for theming
+- Added custom useLocalStorage hook
+
 ### User Experience
 - Loading states during API calls
 - Form validation and error handling
