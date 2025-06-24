@@ -1,6 +1,7 @@
 .header {
     display: flex;
     padding: 30px;
+    width: 100%;
 }
 
 .header h3 {
