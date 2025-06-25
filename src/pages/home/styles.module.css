@@ -6,13 +6,39 @@
     overflow-x: hidden;
 }
 
-.blogList{
+/* .blogList{
     display: grid;
-    grid-template-columns: 1fr; /* Mobile first: 1 column by default */
+    grid-template-columns: 1fr; 
     gap: 15px;
     width: 100%;
     max-width: 100%;
+} */
+
+.blogList {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 15px;
 }
+
+.container {
+  /* Force equal width */
+  min-width: 0; /* Critical for text overflow */
+  overflow: hidden; /* Prevent content from expanding cell */
+}
+
+.container h2 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; /* Show ... for long titles */
+}
+
+.description {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* Show only 3 lines */
+  -webkit-box-orient: vertical;
+}
+
 
 /* Tablet: 2 columns */
 @media screen and (min-width: 768px) {
@@ -54,6 +80,7 @@
 
 .blogList > .container:hover {
    border: 5px solid rgb(213, 209, 13);
+    background-color: rgb(220, 206, 188);
 }
 
 .container .actions {
