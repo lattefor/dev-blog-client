@@ -1,8 +1,10 @@
 .header {
     display: flex;
-    padding: 30px;
+    padding: 20px;
     width: 100%;
     align-items: center;
+    position: relative;
+    box-sizing: border-box;
 }
 
 .logoContainer {
@@ -27,14 +29,72 @@
     color: #0066cc;
 }
 
-.header ul {
+/* Hamburger menu icon - hidden by default on larger screens */
+.hamburger {
+    display: none;
+    cursor: pointer;
+    z-index: 100;
+}
+
+/* Navigation styles */
+.nav ul {
     display: flex;
     list-style: none;
     gap: 20px;
+    margin: 0;
+    padding: 0;
 }
 
-.header ul li {
+.nav ul li {
     font-size: 20px;
     font-weight: bold;
     cursor: pointer;
+}
+
+/* Mobile styles */
+@media screen and (max-width: 767px) {
+    .hamburger {
+        display: block;
+        color: var(--text-primary);
+    }
+    
+    .nav {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 70%;
+        height: 100vh;
+        background-color: var(--background);
+        color: var(--text-primary);
+        box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
+        transition: right 0.3s ease, background-color 0.5s ease, color 0.5s ease;
+        z-index: 99;
+        padding: 80px 20px 20px;
+    }
+    
+    .navOpen {
+        right: 0;
+    }
+    
+    .nav ul {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .nav ul li {
+        margin: 15px 0;
+        font-size: 24px;
+        color: var(--text-primary);
+    }
+    
+    .nav ul li:hover {
+        color: var(--text-primary-hover);
+    }
+}
+
+/* Tablet and desktop styles */
+@media screen and (min-width: 768px) {
+    .nav {
+        display: block;
+    }
 }

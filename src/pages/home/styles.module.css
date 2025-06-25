@@ -1,12 +1,31 @@
 
 .wrapper {
-    padding: 30px;
+    padding: 20px;
+    width: 100%;
+    box-sizing: border-box;
+    overflow-x: hidden;
 }
 
 .blogList{
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
+    grid-template-columns: 1fr; /* Mobile first: 1 column by default */
+    gap: 15px;
+    width: 100%;
+    max-width: 100%;
+}
+
+/* Tablet: 2 columns */
+@media screen and (min-width: 768px) {
+    .blogList {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Desktop: 4 columns */
+@media screen and (min-width: 1024px) {
+    .blogList {
+        grid-template-columns: repeat(4, 1fr);
+    }
 }
 
 .blogList .container {
@@ -18,7 +37,8 @@
 }
 
 .container > h2 {
-    min-width: 200px;
+    width: 100%;
+    word-wrap: break-word;
 }
 
 .container > .description {
