@@ -22,6 +22,17 @@
 .formWrapper > button {
     min-height: 24px;
     padding: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.formWrapper > button:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.submitting {
+    background-color: #cccccc;
 }
 
 .formWrapper > input {

@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState, useCallback } from "react";
 import classes from "./styles.module.css";
 import { GlobalContext } from "../../context";
 import axios from "axios";
@@ -9,31 +9,42 @@ export default function AddNewBlog() {
     useContext(GlobalContext);
   const navigate = useNavigate();
   const location = useLocation();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  async function handleSaveBlogToDatabase() {
-    const response = isEdit
-      ? await axios.put(
-          `${process.env.REACT_APP_API_BASE_URL}update/${location.state.getCurrentBlogItem._id}`,
-          {
+  const handleSaveBlogToDatabase = useCallback(async () => {
+    if (isSubmitting) return;
+    
+    try {
+      setIsSubmitting(true);
+      
+      const response = isEdit
+        ? await axios.put(
+            `${process.env.REACT_APP_API_BASE_URL}update/${location.state.getCurrentBlogItem._id}`,
+            {
+              title: formData.title,
+              description: formData.description,
+            }
+          )
+        : await axios.post(`${process.env.REACT_APP_API_BASE_URL}add`, {
             title: formData.title,
             description: formData.description,
-          }
-        )
-      : await axios.post(`${process.env.REACT_APP_API_BASE_URL}add`, {
-          title: formData.title,
-          description: formData.description,
-        });
+          });
 
-    const result = await response.data;
-    if (result) {
-      setIsEdit(false)
-      setFormData({
-        title: "",
-        description: "",
-      });
-      navigate("/");
+      const result = await response.data;
+      if (result) {
+        setIsEdit(false)
+        setFormData({
+          title: "",
+          description: "",
+        });
+        navigate("/");
+      }
+    } catch (error) {
+      console.error("Error saving blog:", error);
+    } finally {
+      setIsSubmitting(false);
     }
-  }
+  }, [formData, isEdit, location, navigate, setFormData, setIsEdit, isSubmitting]);
 
   useEffect(() => {
     console.log(location);
@@ -77,8 +88,12 @@ export default function AddNewBlog() {
             })
           }
         />
-        <button onClick={handleSaveBlogToDatabase}>
-          {isEdit ? "Edit Blog" : "Add Blog"}
+        <button 
+          onClick={handleSaveBlogToDatabase}
+          disabled={isSubmitting}
+          className={isSubmitting ? classes.submitting : ""}
+        >
+          {isSubmitting ? "Saving..." : isEdit ? "Edit Blog" : "Add Blog"}
         </button>
       </div>
     </div>
