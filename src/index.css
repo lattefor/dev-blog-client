@@ -6,8 +6,10 @@
     margin: 0px;
     font-family:'Courier New', Courier, monospace;
     --text-primary-hover : rgb(161, 39, 110);
-}
-
+    /* To reference images in the public folder, start the path with a forward slash */
+    background-image: url("./weekend.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;}
 [data-theme='dark'] {
     --background : #000;
     --text-primary : #fff;
