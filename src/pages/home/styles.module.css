@@ -80,7 +80,12 @@
 
 .blogList > .container:hover {
    border: 5px solid rgb(213, 209, 13);
-    background-color: rgb(220, 206, 188);
+   background-color: rgb(220, 206, 188);
+}
+
+.blogContent {
+   cursor: pointer;
+   padding-bottom: 30px;
 }
 
 .container .actions {

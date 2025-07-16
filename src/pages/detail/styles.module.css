@@ -1,3 +1,47 @@
 .wrapper {
-    padding: 30px
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    position: relative;
+    min-height: 300px;
+}
+
+.wrapper h1 {
+    margin-bottom: 10px;
+    font-size: 2rem;
+}
+
+.metadata {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.content {
+    line-height: 1.6;
+    font-size: 1.1rem;
+}
+
+.content p {
+    margin-bottom: 15px;
+}
+
+.actions {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    gap: 15px;
+}
+
+.actions svg {
+    cursor: pointer;
+    color: #333;
+    transition: color 0.2s ease;
+}
+
+.actions svg:hover {
+    color: #007bff;
 }

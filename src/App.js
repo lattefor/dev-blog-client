@@ -4,6 +4,7 @@ import { Route, Routes } from "react-router-dom";
 import Home from "./pages/home";
 import AddNewBlog from "./pages/add-blog";
 import Contact from "./pages/contact";
+import Detail from "./pages/detail";
 import useLocalStorage from "./useLocalStorage";
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
           <Route exact path="/" element={<Home />} />
           <Route exact path="/add-blog" element={<AddNewBlog />} />
           <Route exact path="/contact" element={<Contact />} />
+          <Route path="/blog/:id" element={<Detail />} />
         </Routes>
       </div>
     </div>

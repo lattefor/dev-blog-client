@@ -35,25 +35,7 @@ export default function Home() {
     }
   }
 
-  async function handleEdit( getCurrentBlogItem ) {
-    console.log("getCurrentBlogItem :", getCurrentBlogItem);
-    navigate("/add-blog", { state: { getCurrentBlogItem } });
-  }
-  
-  async function handleDeleteBlog( getCurrentId ) {
-    try {
-      console.log("What is the ID: ", getCurrentId);
-      const response = await axios.delete(`${process.env.REACT_APP_API_BASE_URL}delete/${getCurrentId}`);
-      const result = response.data;
-
-      if (result?.message) {
-        fetchListOfBlogs();
-        // navigate(0)
-      }
-    } catch (error) {
-      console.error("Error while deleting blogs:", error);
-    } 
-  }
+  // Functions moved to detail page
 
   useEffect(() => {
     fetchListOfBlogs();
@@ -70,19 +52,14 @@ export default function Home() {
         <div className={classes.blogList}>
           {blogList.map((blogItem, index) => (
             <div key={blogItem._id} className={classes.container}>
-              {/* There appears to be extra margin/padding above the h2 element. 
-              This is likely due to default browser styles for h2 elements. To fix this, 
-              you can add a CSS rule in styles.module.css to remove the top margin, e.g.: h2 { margin-top: 0; } */}
-              <h2>{blogItem.title}</h2>
-              <div className={classes.description}>
-                <p>{blogItem.description}</p>
-              </div>
-              <div className={classes.actions}>
-              <FaEdit onClick={() => handleEdit(blogItem)} size={22} />
-              <FaTrash
-                onClick={() => handleDeleteBlog(blogItem._id)}
-                size={22}
-              />
+              <div 
+                className={classes.blogContent} 
+                onClick={() => navigate(`/blog/${blogItem._id}`)}
+              >
+                <h2>{blogItem.title}</h2>
+                <div className={classes.description}>
+                  <p>{blogItem.description}</p>
+                </div>
               </div>
             </div>
           ))}
