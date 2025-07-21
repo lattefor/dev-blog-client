@@ -55,22 +55,36 @@
 }
 
 .blogList .container {
-    padding: 10px;
-    border: 5px solid rgb(234, 149, 229);
-    background-color: rgb(245, 239, 231);
-    border-radius: 8px;
-    color: rgb(45, 53, 45);
+    padding: 16px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    background-color: var(--background);
+    border-radius: 12px;
+    color: var(--text-primary);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
 }
 
 .container > h2 {
     width: 100%;
     word-wrap: break-word;
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    position: relative;
+    z-index: 2;
 }
 
 .container > .description {
     border: none;
-    /* Add margin bottom to prevent overlap with actions */
     margin-bottom: 40px;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: var(--text-primary);
+    opacity: 0.9;
+    position: relative;
+    z-index: 2;
 }
 
 .blogList > .container {
@@ -79,8 +93,38 @@
 }
 
 .blogList > .container:hover {
-   border: 5px solid rgb(213, 209, 13);
-   background-color: rgb(220, 206, 188);
+   border-color: rgba(0, 0, 0, 0.2);
+   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+   transform: translateY(-2px);
+}
+
+/* Gradient effect on hover inspired by MagicCard */
+.blogList > .container::after {
+   content: '';
+   position: absolute;
+   inset: 0;
+   border-radius: 12px;
+   opacity: 0;
+   transition: opacity 0.3s ease;
+   background: radial-gradient(600px circle at var(--mouse-x, 0) var(--mouse-y, 0), 
+               rgba(var(--gradient-color, 38, 38, 38), 0.1), 
+               transparent 40%);
+   pointer-events: none;
+   z-index: 1;
+}
+
+.blogList > .container:hover::after {
+   opacity: 1;
+}
+
+/* Dark mode adjustments */
+[data-theme='dark'] .blogList > .container {
+   border-color: rgba(255, 255, 255, 0.1);
+   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme='dark'] .blogList > .container:hover {
+   border-color: rgba(255, 255, 255, 0.2);
 }
 
 .blogContent {
@@ -92,11 +136,24 @@
     border: none;
     margin: 0;
     display: flex;
-    gap: 10px;
+    gap: 12px;
     
     /* Position actions at bottom */
     position: absolute;
-    bottom: 10px;
-    left: 10px;
-    right: 10px;
+    bottom: 12px;
+    left: 16px;
+    right: 16px;
+    z-index: 2;
+}
+
+.container .actions svg {
+    color: var(--text-primary);
+    opacity: 0.7;
+    transition: all 0.2s ease;
+}
+
+.container .actions svg:hover {
+    opacity: 1;
+    transform: scale(1.1);
+    color: var(--text-primary-hover);
 }

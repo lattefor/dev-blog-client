@@ -6,6 +6,16 @@ import { FaTrash, FaEdit } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 export default function Home() {
+  // Track mouse position for gradient effect
+  const handleMouseMove = (e) => {
+    const card = e.currentTarget;
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    
+    card.style.setProperty('--mouse-x', `${x}px`);
+    card.style.setProperty('--mouse-y', `${y}px`);
+  };
   const { blogList, setBlogList, pending, setPending, isEdit, setIsEdit } =
     useContext(GlobalContext);
 
@@ -51,7 +61,11 @@ export default function Home() {
       ) : blogList && blogList.length ? (
         <div className={classes.blogList}>
           {blogList.map((blogItem, index) => (
-            <div key={blogItem._id} className={classes.container}>
+            <div 
+              key={blogItem._id} 
+              className={classes.container}
+              onMouseMove={handleMouseMove}
+            >
               <div 
                 className={classes.blogContent} 
                 onClick={() => navigate(`/blog/${blogItem._id}`)}
