@@ -7,27 +7,37 @@ import Contact from "./pages/contact";
 import Detail from "./pages/detail";
 import useLocalStorage from "./useLocalStorage";
 import { useEffect } from "react";
+// Using Unicode characters instead of SVG icons
+
+import { IoSunnyOutline, IoMoonOutline } from "react-icons/io5";
 
 function App() {
   const [theme, setTheme] = useLocalStorage("theme", "dark");
-  
+
   // Apply theme to document body
   useEffect(() => {
-    document.body.setAttribute('data-theme', theme);
+    document.body.setAttribute("data-theme", theme);
   }, [theme]);
-  
+
   return (
     <div className="dark-light-mode" data-theme={theme}>
       <div className="container">
         <div className="header-container">
           <Header />
+
           <button
+            className="moon-sun-toggle"
             onClick={() => {
               setTheme((the) => (the === "dark" ? "light" : "dark"));
             }}
           >
-            {" "}
-            Toggle Theme
+            <span className="theme-icon">
+              {theme === "dark" ? (
+                <IoMoonOutline size={22} />
+              ) : (
+                <IoSunnyOutline size={22} />
+              )}
+            </span>
           </button>
         </div>
 
