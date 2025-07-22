@@ -6,11 +6,14 @@ import { useNavigate } from "react-router-dom";
 import { SearchInput } from "../../components/ui/search-input";
 import { ModernSelect } from "../../components/ui/modern-select";
 import { useDebounce } from "../../hooks/useDebounce";
-import { Card, CardContent, CardTitle, CardDescription } from "../../components/card";
+import { Card, CardContent, CardTitle, CardMeta, CardDescription } from "../../components/card";
 
 export default function Home() {
   const [searchTerm, setSearchTerm] = useState("");
-  const [sortOption, setSortOption] = useState("");
+  // Get sort option from sessionStorage or default to "newest"
+  const [sortOption, setSortOption] = useState(() => {
+    return sessionStorage.getItem("blogSortOption") || "newest";
+  });
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
   
   // Track mouse position for gradient effect
@@ -75,9 +78,35 @@ export default function Home() {
     );
   }, [blogList, debouncedSearchTerm]);
   
+  // Sort filtered blogs based on selected sort option
+  const sortedBlogs = useMemo(() => {
+    if (!sortOption || !filteredBlogs.length) {
+      return filteredBlogs;
+    }
+    
+    // Create a new array to avoid mutating the original
+    const blogs = [...filteredBlogs];
+    
+    switch (sortOption) {
+      case 'newest':
+        return blogs.sort((a, b) => new Date(b.date) - new Date(a.date));
+      case 'oldest':
+        return blogs.sort((a, b) => new Date(a.date) - new Date(b.date));
+      case 'a-z':
+        return blogs.sort((a, b) => a.title.localeCompare(b.title));
+      case 'z-a':
+        return blogs.sort((a, b) => b.title.localeCompare(a.title));
+      default:
+        return blogs;
+    }
+  }, [filteredBlogs, sortOption]);
+  
   // Handle sort selection change
   const handleSortChange = (e) => {
-    setSortOption(e.target.value);
+    const newSortOption = e.target.value;
+    setSortOption(newSortOption);
+    // Save to sessionStorage for persistence
+    sessionStorage.setItem("blogSortOption", newSortOption);
   };
 
   return (
@@ -102,15 +131,16 @@ export default function Home() {
       
       {pending ? (
         <p>Loading...</p>
-      ) : filteredBlogs && filteredBlogs.length ? (
+      ) : sortedBlogs && sortedBlogs.length ? (
         <div className={classes.blogList}>
-          {filteredBlogs.map((blogItem) => (
+          {sortedBlogs.map((blogItem) => (
             <Card 
               key={blogItem._id}
               onMouseMove={handleMouseMove}
             >
               <CardContent onClick={() => navigate(`/blog/${blogItem._id}`)}>
                 <CardTitle>{blogItem.title}</CardTitle>
+                <CardMeta>Posted: {new Date(blogItem.date).toLocaleDateString()}</CardMeta>
                 <CardDescription>
                   <p>{blogItem.description}</p>
                 </CardDescription>

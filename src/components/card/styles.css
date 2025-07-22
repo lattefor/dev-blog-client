@@ -48,6 +48,14 @@
   text-overflow: ellipsis; /* Show ... for long titles */
   font-size: 1.25rem;
   font-weight: 600;
+  margin-bottom: 4px;
+  position: relative;
+  z-index: 2;
+}
+
+.card-meta {
+  font-size: 0.8rem;
+  color: var(--text-muted, #718096);
   margin-bottom: 8px;
   position: relative;
   z-index: 2;

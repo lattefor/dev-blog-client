@@ -25,6 +25,10 @@ export function CardTitle({ children }) {
   return <h2 className="card-title">{children}</h2>;
 }
 
+export function CardMeta({ children }) {
+  return <div className="card-meta">{children}</div>;
+}
+
 export function CardDescription({ children }) {
   return <div className="card-description">{children}</div>;
 }

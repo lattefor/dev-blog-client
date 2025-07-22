@@ -22,11 +22,13 @@
 .logoIcon {
     cursor: pointer;
     transition: transform 0.2s ease;
+    height: 35px;
+    width: auto;
+    margin-left: 10px; /* Adding space on the left side */
 }
 
 .logoIcon:hover {
     transform: scale(1.1);
-    color: #0066cc;
 }
 
 /* Tubelight navbar positioning */
