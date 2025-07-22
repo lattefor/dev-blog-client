@@ -6,9 +6,16 @@ import AddNewBlog from "./pages/add-blog";
 import Contact from "./pages/contact";
 import Detail from "./pages/detail";
 import useLocalStorage from "./useLocalStorage";
+import { useEffect } from "react";
 
 function App() {
   const [theme, setTheme] = useLocalStorage("theme", "dark");
+  
+  // Apply theme to document body
+  useEffect(() => {
+    document.body.setAttribute('data-theme', theme);
+  }, [theme]);
+  
   return (
     <div className="dark-light-mode" data-theme={theme}>
       <div className="container">

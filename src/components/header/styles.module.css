@@ -5,12 +5,12 @@
     align-items: center;
     position: relative;
     box-sizing: border-box;
+    justify-content: space-between;
 }
 
 .logoContainer {
     display: flex;
     align-items: center;
-    flex: 1;
     gap: 8px;
 }
 
@@ -31,7 +31,71 @@
     transform: scale(1.1);
 }
 
-/* Tubelight navbar positioning */
+/* Mobile menu button */
+.mobileMenuButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: 1px solid transparent;
+    color: var(--text-primary, #4a5568);
+    cursor: pointer;
+    padding: 0;
+    width: 45px;
+    height: 45px;
+    z-index: 60;
+}
+
+.mobileMenuButton:hover {
+    border: 1px solid var(--border-color, #e2e8f0);
+    border-radius: 4px;
+}
+
+/* Custom hamburger icon */
+.hamburgerIcon {
+    width: 24px;
+    height: 18px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.hamburgerIcon span {
+    display: block;
+    height: 3px;
+    width: 24px;
+    background-color: currentColor;
+    border-radius: 3px;
+}
+
+/* Custom close (X) icon */
+.closeIcon {
+    width: 24px;
+    height: 24px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.closeIcon span {
+    position: absolute;
+    height: 3px;
+    width: 24px;
+    background-color: currentColor;
+    border-radius: 3px;
+}
+
+.closeIcon span:first-child {
+    transform: rotate(45deg);
+}
+
+.closeIcon span:last-child {
+    transform: rotate(-45deg);
+}
+
+/* Tubelight navbar positioning for desktop */
 .tubelightNav {
     position: absolute !important;
     right: 20px;
@@ -43,14 +107,33 @@
     padding: 0 !important;
 }
 
-/* Mobile styles */
-@media screen and (max-width: 767px) {
-    .tubelightNav {
-        position: fixed !important;
-        bottom: 20px !important;
-        left: 50% !important;
-        transform: translateX(-50%) !important;
-        top: auto !important;
-        right: auto !important;
+/* Mobile overlay */
+.mobileOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.85);
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.3s ease;
+}
+
+.mobileNav {
+    position: relative !important;
+    transform: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
     }
 }

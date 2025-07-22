@@ -5,7 +5,7 @@ import { cn } from "../../utils";
 import "./tubelight-navbar.css";
 import { GlobalContext } from "../../context";
 
-export function NavBar({ items, className }) {
+export function NavBar({ items, className, onItemClick }) {
   const [activeTab, setActiveTab] = useState(items[0].name);
   const [isMobile, setIsMobile] = useState(false);
   const { setIsEdit, setFormData } = useContext(GlobalContext);
@@ -31,6 +31,11 @@ export function NavBar({ items, className }) {
     }
     
     navigate(item.url);
+    
+    // Close mobile menu if onItemClick is provided
+    if (onItemClick) {
+      onItemClick();
+    }
   };
 
   return (
@@ -40,7 +45,7 @@ export function NavBar({ items, className }) {
         className
       )}
     >
-      <div className="flex items-center gap-3 bg-background/5 border border-border backdrop-blur-lg py-1 px-1 rounded-full shadow-lg">
+      <div className={isMobile ? "flex flex-col items-center gap-6 p-4 bg-black/50 rounded-lg border border-white/20" : "flex items-center gap-3 bg-background/5 border border-border backdrop-blur-lg py-1 px-1 rounded-full shadow-lg"}>
         {items.map((item) => {
           const Icon = item.icon;
           const isActive = activeTab === item.name;
@@ -51,14 +56,26 @@ export function NavBar({ items, className }) {
               onClick={() => handleNavigation(item)}
               className={cn(
                 "relative cursor-pointer text-sm font-semibold px-6 py-2 rounded-full transition-colors",
-                "text-foreground/80 hover:text-primary",
-                isActive && "bg-muted text-primary"
+                !isMobile && "text-foreground/80 hover:text-primary",
+                isActive && !isMobile && "bg-muted text-primary",
+                isActive && isMobile && "bg-white/20",
+                isMobile && "w-full text-center bg-black/30"
               )}
             >
-              <span className="hidden md:inline relative z-10">{item.name}</span>
-              <span className="md:hidden relative z-10">
-                <Icon size={18} strokeWidth={2.5} />
-              </span>
+              {isMobile ? (
+                <div className="flex items-center justify-center gap-3">
+                  <Icon size={20} strokeWidth={2} color="white" />
+                  <span style={{ color: 'white', fontWeight: 'bold' }}>{item.name}</span>
+                </div>
+              ) : (
+                <>
+                  <span className="hidden md:inline relative z-10">{item.name}</span>
+                  <span className="md:hidden relative z-10">
+                    <Icon size={18} strokeWidth={2.5} />
+                  </span>
+                </>
+              )}
+              
               {isActive && (
                 <motion.div
                   layoutId="lamp"
