@@ -8,6 +8,7 @@
   padding: 0.5rem 0.75rem;
   font-size: 0.875rem;
   transition: all 0.2s ease;
+  color: var(--text-primary, #4a5568);
 }
 
 .input:focus {
@@ -23,4 +24,11 @@
 .input:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+/* Dark mode adjustments */
+[data-theme='dark'] .input {
+  color: white;
+  background-color: var(--background-dark, #1f2937);
+  border-color: rgba(255, 255, 255, 0.1);
 }

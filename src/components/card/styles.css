@@ -1,0 +1,104 @@
+.card-container {
+  min-width: 0; /* Critical for text overflow */
+  overflow: hidden; /* Prevent content from expanding cell */
+  padding: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background-color: var(--background, white);
+  border-radius: 12px;
+  color: var(--text-primary, #4a5568);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.card-container:hover {
+  border-color: rgba(0, 0, 0, 0.2);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  transform: translateY(-2px);
+}
+
+/* Gradient effect on hover inspired by MagicCard */
+.card-container::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  background: radial-gradient(600px circle at var(--mouse-x, 0) var(--mouse-y, 0), 
+              rgba(var(--gradient-color, 38, 38, 38), 0.1), 
+              transparent 40%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.card-container:hover::after {
+  opacity: 1;
+}
+
+.card-content {
+  cursor: pointer;
+  padding-bottom: 30px;
+}
+
+.card-title {
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; /* Show ... for long titles */
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  position: relative;
+  z-index: 2;
+}
+
+.card-description {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* Show only 3 lines */
+  -webkit-box-orient: vertical;
+  border: none;
+  margin-bottom: 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--text-primary, #4a5568);
+  opacity: 0.9;
+  position: relative;
+  z-index: 2;
+}
+
+.card-actions {
+  border: none;
+  margin: 0;
+  display: flex;
+  gap: 12px;
+  position: absolute;
+  bottom: 12px;
+  left: 16px;
+  right: 16px;
+  z-index: 2;
+}
+
+.card-actions svg {
+  color: var(--text-primary, #4a5568);
+  opacity: 0.7;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.card-actions svg:hover {
+  opacity: 1;
+  transform: scale(1.1);
+  color: var(--primary, #3b82f6);
+}
+
+/* Dark mode adjustments */
+[data-theme='dark'] .card-container {
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme='dark'] .card-container:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+}

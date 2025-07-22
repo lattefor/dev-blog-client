@@ -1,14 +1,17 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useMemo } from "react";
 import { GlobalContext } from "../../context";
 import axios from "axios";
 import classes from "./styles.module.css";
 import { useNavigate } from "react-router-dom";
 import { SearchInput } from "../../components/ui/search-input";
 import { ModernSelect } from "../../components/ui/modern-select";
+import { useDebounce } from "../../hooks/useDebounce";
+import { Card, CardContent, CardTitle, CardDescription } from "../../components/card";
 
 export default function Home() {
   const [searchTerm, setSearchTerm] = useState("");
   const [sortOption, setSortOption] = useState("");
+  const debouncedSearchTerm = useDebounce(searchTerm, 300);
   
   // Track mouse position for gradient effect
   const handleMouseMove = (e) => {
@@ -29,12 +32,6 @@ export default function Home() {
   async function fetchListOfBlogs() {
     try {
       setPending(true);
-      // To use environment variables in React:
-      // 1. Create a file named .env in your project root
-      // 2. Add REACT_APP_ prefix to your variables: REACT_APP_API_BASE_URL=http://localhost:5011/api/blogs/
-      // 3. Restart your development server after creating/modifying .env
-      // 4. Access using process.env.REACT_APP_API_BASE_URL
-      // Note: Only variables prefixed with REACT_APP_ will be exposed to your application
       const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}`); 
       const results = response.data;
 
@@ -50,13 +47,9 @@ export default function Home() {
     }
   }
 
-  // Functions moved to detail page
-
   useEffect(() => {
     fetchListOfBlogs();
   }, []);
-  // The current code () => {fetchListOfBlogs} only passes the function reference but doesn't execute it
-  // To actually call the function when the component mounts, we need to add the parentheses
 
   // Sort options for the dropdown
   const sortOptions = [
@@ -70,6 +63,17 @@ export default function Home() {
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
   };
+  
+  // Filter blogs based on search term
+  const filteredBlogs = useMemo(() => {
+    if (!debouncedSearchTerm.trim()) {
+      return blogList;
+    }
+    
+    return blogList.filter(blog => 
+      blog.title.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
+    );
+  }, [blogList, debouncedSearchTerm]);
   
   // Handle sort selection change
   const handleSortChange = (e) => {
@@ -98,24 +102,20 @@ export default function Home() {
       
       {pending ? (
         <p>Loading...</p>
-      ) : blogList && blogList.length ? (
+      ) : filteredBlogs && filteredBlogs.length ? (
         <div className={classes.blogList}>
-          {blogList.map((blogItem, index) => (
-            <div 
-              key={blogItem._id} 
-              className={classes.container}
+          {filteredBlogs.map((blogItem) => (
+            <Card 
+              key={blogItem._id}
               onMouseMove={handleMouseMove}
             >
-              <div 
-                className={classes.blogContent} 
-                onClick={() => navigate(`/blog/${blogItem._id}`)}
-              >
-                <h2>{blogItem.title}</h2>
-                <div className={classes.description}>
+              <CardContent onClick={() => navigate(`/blog/${blogItem._id}`)}>
+                <CardTitle>{blogItem.title}</CardTitle>
+                <CardDescription>
                   <p>{blogItem.description}</p>
-                </div>
-              </div>
-            </div>
+                </CardDescription>
+              </CardContent>
+            </Card>
           ))}
         </div>
       ) : (

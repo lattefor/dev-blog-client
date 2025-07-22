@@ -46,28 +46,6 @@
     margin-bottom: 15px;
 }
 
-.actions {
-    position: absolute;
-    bottom: 20px;
-    right: 30px;
-    display: flex;
-    gap: 15px;
-    z-index: 2;
-}
-
-.actions svg {
-    cursor: pointer;
-    color: var(--text-primary);
-    opacity: 0.7;
-    transition: all 0.2s ease;
-}
-
-.actions svg:hover {
-    opacity: 1;
-    transform: scale(1.1);
-    color: var(--text-primary-hover);
-}
-
 /* Dark mode adjustments */
 [data-theme='dark'] .wrapper {
     border-color: rgba(255, 255, 255, 0.1);
@@ -117,9 +95,5 @@
     
     .content {
         font-size: 1rem;
-    }
-    
-    .actions {
-        right: 20px;
     }
 }

@@ -4,6 +4,7 @@ import axios from "axios";
 import classes from "./styles.module.css";
 import { FaTrash, FaEdit } from "react-icons/fa";
 import { GlobalContext } from "../../context";
+import { Card, CardActions } from "../../components/card";
 
 export default function Detail() {
     const { id } = useParams();
@@ -111,10 +112,10 @@ export default function Detail() {
             <div className={classes.content}>
                 <p>{blog.description}</p>
             </div>
-            <div className={classes.actions}>
+            <CardActions>
                 <FaEdit onClick={() => handleEdit(blog)} size={22} />
                 <FaTrash onClick={() => handleDeleteBlog(blog._id)} size={22} />
-            </div>
+            </CardActions>
         </div>
     );
 }
