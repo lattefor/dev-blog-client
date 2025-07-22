@@ -1,11 +1,15 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { GlobalContext } from "../../context";
 import axios from "axios";
 import classes from "./styles.module.css";
-import { FaTrash, FaEdit } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { SearchInput } from "../../components/ui/search-input";
+import { ModernSelect } from "../../components/ui/modern-select";
 
 export default function Home() {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [sortOption, setSortOption] = useState("");
+  
   // Track mouse position for gradient effect
   const handleMouseMove = (e) => {
     const card = e.currentTarget;
@@ -16,7 +20,8 @@ export default function Home() {
     card.style.setProperty('--mouse-x', `${x}px`);
     card.style.setProperty('--mouse-y', `${y}px`);
   };
-  const { blogList, setBlogList, pending, setPending, isEdit, setIsEdit } =
+  
+  const { blogList, setBlogList, pending, setPending } =
     useContext(GlobalContext);
 
   const navigate = useNavigate();
@@ -53,9 +58,44 @@ export default function Home() {
   // The current code () => {fetchListOfBlogs} only passes the function reference but doesn't execute it
   // To actually call the function when the component mounts, we need to add the parentheses
 
+  // Sort options for the dropdown
+  const sortOptions = [
+    { value: "newest", label: "Newest First" },
+    { value: "oldest", label: "Oldest First" },
+    { value: "a-z", label: "Title (A-Z)" },
+    { value: "z-a", label: "Title (Z-A)" },
+  ];
+  
+  // Handle search input change
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
+  
+  // Handle sort selection change
+  const handleSortChange = (e) => {
+    setSortOption(e.target.value);
+  };
+
   return (
     <div className={classes.wrapper}>
-      <h1>Add Sort Here</h1>
+      <div className={classes.controls}>
+        <div className={classes.searchContainer}>
+          <SearchInput 
+            placeholder="Search blogs..." 
+            value={searchTerm} 
+            onChange={handleSearchChange} 
+          />
+        </div>
+        <div className={classes.sortContainer}>
+          <ModernSelect 
+            options={sortOptions} 
+            value={sortOption} 
+            onChange={handleSortChange} 
+            placeholder="Sort by" 
+          />
+        </div>
+      </div>
+      
       {pending ? (
         <p>Loading...</p>
       ) : blogList && blogList.length ? (

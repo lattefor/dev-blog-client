@@ -6,6 +6,38 @@
     overflow-x: hidden;
 }
 
+.controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    gap: 16px;
+}
+
+.searchContainer {
+    flex: 1;
+    max-width: 400px;
+}
+
+.sortContainer {
+    width: 180px;
+}
+
+@media screen and (max-width: 600px) {
+    .controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .searchContainer {
+        max-width: 100%;
+    }
+    
+    .sortContainer {
+        width: 100%;
+    }
+}
+
 /* .blogList{
     display: grid;
     grid-template-columns: 1fr; 
