@@ -5,7 +5,7 @@ import classes from "./styles.module.css";
 import { FaTrash, FaEdit } from "react-icons/fa";
 import { GlobalContext } from "../../context";
 import { Card, CardActions } from "../../components/card";
-import { useUser } from "@clerk/clerk-react";
+import { useUser, useAuth } from "@clerk/clerk-react";
 
 export default function Detail() {
     const { id } = useParams();
@@ -14,7 +14,8 @@ export default function Detail() {
     const [blog, setBlog] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const { isSignedIn } = useUser();
+    const { isSignedIn, user } = useUser();
+    const { getToken } = useAuth();
     
     // Track mouse position for gradient effect
     const handleMouseMove = (e) => {
@@ -83,6 +84,13 @@ export default function Detail() {
             navigate("/sign-in", { state: { returnUrl: `/blog/${id}` } });
             return;
         }
+        
+        // Check if user is the author
+        if (user && blogItem.userId !== user.id) {
+            alert("You can only edit your own blogs");
+            return;
+        }
+        
         navigate("/add-blog", { state: { getCurrentBlogItem: blogItem } });
     }
     
@@ -92,9 +100,24 @@ export default function Detail() {
             return;
         }
         
+        // Check if user is the author
+        if (user && blog.userId !== user.id) {
+            alert("You can only delete your own blogs");
+            return;
+        }
+        
         try {
             const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5011/api/blogs/';
-            const response = await axios.delete(`${API_BASE_URL}delete/${blogId}`);
+            const token = await getToken();
+            
+            const response = await axios.delete(
+                `${API_BASE_URL}delete/${blogId}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            );
             const result = response.data;
 
             if (result?.message) {
@@ -103,6 +126,9 @@ export default function Detail() {
             }
         } catch (error) {
             console.error("Error while deleting blog:", error);
+            if (error.response?.status === 403) {
+                alert("You don't have permission to delete this blog");
+            }
         }
     }
 
@@ -123,7 +149,7 @@ export default function Detail() {
             <div className={classes.content}>
                 <p>{blog.description}</p>
             </div>
-            {isSignedIn && (
+            {isSignedIn && user && blog.userId === user.id && (
                 <CardActions>
                     <FaEdit onClick={() => handleEdit(blog)} size={22} />
                     <FaTrash onClick={() => handleDeleteBlog(blog._id)} size={22} />

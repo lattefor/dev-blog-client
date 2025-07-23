@@ -7,7 +7,7 @@ import { Input } from "../../components/ui/input";
 import { Textarea } from "../../components/ui/textarea";
 import { Button } from "../../components/ui/button";
 import { Label } from "../../components/ui/label";
-import { useUser } from "@clerk/clerk-react";
+import { useUser, useAuth } from "@clerk/clerk-react";
 
 export default function AddNewBlog() {
   const { formData, setFormData, setIsEdit, isEdit } =
@@ -16,6 +16,7 @@ export default function AddNewBlog() {
   const location = useLocation();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { user, isSignedIn } = useUser();
+  const { getToken } = useAuth();
   
   // Reset form when navigating directly to the page
   useEffect(() => {
@@ -37,22 +38,35 @@ export default function AddNewBlog() {
     try {
       setIsSubmitting(true);
       
+      // Get authentication token
+      const token = await getToken();
+      
+      // Set up headers with authentication token
+      const headers = {
+        Authorization: `Bearer ${token}`
+      };
+      
       const response = isEdit
         ? await axios.put(
             `${process.env.REACT_APP_API_BASE_URL}update/${location.state.getCurrentBlogItem._id}`,
             {
               title: formData.title,
               description: formData.description,
-              author: isSignedIn ? (user.fullName || user.username || user.emailAddresses[0]?.emailAddress || 'Unknown') : 'Unknown',
-              userId: isSignedIn ? user.id : '',
-            }
+              author: isSignedIn ? (user.fullName || user.username || user.emailAddresses[0]?.emailAddress || 'Unknown') : 'Unknown'
+              // userId is now extracted from the token on the server
+            },
+            { headers }
           )
-        : await axios.post(`${process.env.REACT_APP_API_BASE_URL}add`, {
-            title: formData.title,
-            description: formData.description,
-            author: isSignedIn ? (user.fullName || user.username || user.emailAddresses[0]?.emailAddress || 'Unknown') : 'Unknown',
-            userId: isSignedIn ? user.id : '',
-          });
+        : await axios.post(
+            `${process.env.REACT_APP_API_BASE_URL}add`, 
+            {
+              title: formData.title,
+              description: formData.description,
+              author: isSignedIn ? (user.fullName || user.username || user.emailAddresses[0]?.emailAddress || 'Unknown') : 'Unknown'
+              // userId is now extracted from the token on the server
+            },
+            { headers }
+          );
 
       const result = await response.data;
       if (result) {
