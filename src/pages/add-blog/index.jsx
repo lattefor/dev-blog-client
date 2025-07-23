@@ -7,6 +7,7 @@ import { Input } from "../../components/ui/input";
 import { Textarea } from "../../components/ui/textarea";
 import { Button } from "../../components/ui/button";
 import { Label } from "../../components/ui/label";
+import { useUser } from "@clerk/clerk-react";
 
 export default function AddNewBlog() {
   const { formData, setFormData, setIsEdit, isEdit } =
@@ -14,6 +15,7 @@ export default function AddNewBlog() {
   const navigate = useNavigate();
   const location = useLocation();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { user, isSignedIn } = useUser();
   
   // Reset form when navigating directly to the page
   useEffect(() => {
@@ -23,9 +25,11 @@ export default function AddNewBlog() {
       setFormData({
         title: "",
         description: "",
+        author: isSignedIn ? (user.fullName || user.username || user.emailAddresses[0]?.emailAddress || 'Unknown') : 'Unknown',
+        userId: isSignedIn ? user.id : '',
       });
     }
-  }, [location.pathname, setFormData, setIsEdit]);
+  }, [location.pathname, setFormData, setIsEdit, isSignedIn, user]);
 
   const handleSaveBlogToDatabase = useCallback(async () => {
     if (isSubmitting) return;
@@ -39,11 +43,15 @@ export default function AddNewBlog() {
             {
               title: formData.title,
               description: formData.description,
+              author: isSignedIn ? (user.fullName || user.username || user.emailAddresses[0]?.emailAddress || 'Unknown') : 'Unknown',
+              userId: isSignedIn ? user.id : '',
             }
           )
         : await axios.post(`${process.env.REACT_APP_API_BASE_URL}add`, {
             title: formData.title,
             description: formData.description,
+            author: isSignedIn ? (user.fullName || user.username || user.emailAddresses[0]?.emailAddress || 'Unknown') : 'Unknown',
+            userId: isSignedIn ? user.id : '',
           });
 
       const result = await response.data;
@@ -52,6 +60,8 @@ export default function AddNewBlog() {
         setFormData({
           title: "",
           description: "",
+          author: isSignedIn ? (user.fullName || user.username || user.emailAddresses[0]?.emailAddress || 'Unknown') : 'Unknown',
+          userId: isSignedIn ? user.id : '',
         });
         navigate("/");
       }
@@ -60,7 +70,7 @@ export default function AddNewBlog() {
     } finally {
       setIsSubmitting(false);
     }
-  }, [formData, isEdit, location, navigate, setFormData, setIsEdit, isSubmitting]);
+  }, [formData, isEdit, location, navigate, setFormData, setIsEdit, isSubmitting, isSignedIn, user]);
 
   useEffect(() => {
     if (location.state) {
@@ -69,6 +79,8 @@ export default function AddNewBlog() {
       setFormData({
         title: getCurrentBlogItem.title,
         description: getCurrentBlogItem.description,
+        author: getCurrentBlogItem.author || 'Unknown',
+        userId: getCurrentBlogItem.userId || '',
       });
     }
   }, [location.state, setFormData, setIsEdit]);

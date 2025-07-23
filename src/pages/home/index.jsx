@@ -156,6 +156,7 @@ export default function Home() {
             >
               <CardContent onClick={() => navigate(`/blog/${blogItem._id}`)}>
                 <CardTitle>{blogItem.title}</CardTitle>
+                <CardMeta>Author: {blogItem.author || 'Unknown'}</CardMeta>
                 <CardMeta>Posted: {new Date(blogItem.date).toLocaleDateString()}</CardMeta>
                 <CardDescription>
                   <p>{blogItem.description}</p>

@@ -1,4 +1,5 @@
 import Header from "./components/header";
+import Footer from "./components/footer";
 import { Route, Routes } from "react-router-dom";
 import Home from "./pages/home";
 import AddNewBlog from "./pages/add-blog";
@@ -51,6 +52,8 @@ function App() {
           <Route path="/sign-up/*" element={<SignUpPage />} />
           <Route path="/blog/:id" element={<Detail />} />
         </Routes>
+        
+        <Footer />
       </div>
     </div>
   );

@@ -62,7 +62,7 @@ export default function Header() {
   return (
     <div className={classes.header}>
       <div className={classes.logoContainer}>
-        <h3>Dev Blog</h3>
+        <h3>Devlogs</h3>
         <img 
           src="/eightball.png" 
           alt="Magic 8 Ball" 

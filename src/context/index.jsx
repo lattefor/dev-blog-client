@@ -6,6 +6,8 @@ export default function GlobalStates({ children }) {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
+    author: "Unknown",
+    userId: "",
   });
 
   const [blogList, setBlogList] = useState([]);
