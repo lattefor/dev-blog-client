@@ -40,7 +40,7 @@ body {
 .dark-light-mode .container  {
     color: var(--text-primary);
     margin: 0px;
-
+    padding-bottom: 80px; /* Add space for the footer */
 }
 
 .dark-light-mode .container p {
