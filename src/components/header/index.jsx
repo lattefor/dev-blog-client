@@ -1,20 +1,47 @@
 import { useState, useEffect } from "react";
 import classes from "./styles.module.css";
 import { useNavigate } from "react-router-dom";
-import { Home, Edit, Phone, X } from "lucide-react";
+import { Home, Edit, LogIn, LogOut, X } from "lucide-react";
 import { NavBar } from "../ui/tubelight-navbar";
+import { useUser, useClerk } from "@clerk/clerk-react";
 
 export default function Header() {
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const { isSignedIn, user } = useUser();
+  const { signOut } = useClerk();
   
   // Define navigation items for the tubelight navbar
-  const navItems = [
-    { name: 'Home', url: '/', icon: Home },
-    { name: 'Add Blog', url: '/add-blog', icon: Edit },
-    { name: 'Contact', url: '/contact', icon: Phone }
-  ];
+  const getNavItems = () => {
+    const baseItems = [
+      { name: 'Home', url: '/', icon: Home },
+      { name: 'Add Blog', url: '/add-blog', icon: Edit },
+    ];
+    
+    // Add either Sign In or Sign Out based on authentication status
+    if (isSignedIn) {
+      baseItems.push({ 
+        name: 'Sign Out', 
+        url: '#', 
+        icon: LogOut,
+        onClick: () => handleSignOut()
+      });
+    } else {
+      baseItems.push({ 
+        name: 'Sign In', 
+        url: '/sign-in', 
+        icon: LogIn 
+      });
+    }
+    
+    return baseItems;
+  };
+  
+  const handleSignOut = async () => {
+    await signOut();
+    navigate('/');
+  };
   
   // Check if we're on mobile
   useEffect(() => {
@@ -29,6 +56,8 @@ export default function Header() {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  const navItems = getNavItems();
 
   return (
     <div className={classes.header}>
@@ -76,6 +105,17 @@ export default function Header() {
             items={navItems} 
             className={classes.mobileNav} 
             onItemClick={() => setIsMobileMenuOpen(false)}
+          />
+        </div>
+      )}
+
+      {/* User info display when signed in */}
+      {isSignedIn && (
+        <div className={classes.userInfo}>
+          <img 
+            src={user.imageUrl} 
+            alt={user.fullName || "User"} 
+            className={classes.userAvatar}
           />
         </div>
       )}

@@ -44,7 +44,23 @@ export default function Home() {
       }
     } catch (error) {
       console.error("Error fetching blogs:", error);
-      setBlogList([]);
+      // Use mock data if server is not available (for development)
+      console.log("Using mock data for development");
+      const mockData = [
+        {
+          _id: "mock1",
+          title: "Server Connection Error",
+          description: "Please start your backend server or check the API URL in .env file. This is a mock blog post for development.",
+          date: new Date()
+        },
+        {
+          _id: "mock2",
+          title: "How to Start the Server",
+          description: "Navigate to the server directory and run 'npm start' to start the backend server.",
+          date: new Date()
+        }
+      ];
+      setBlogList(mockData);
     } finally {
       setPending(false);
     }

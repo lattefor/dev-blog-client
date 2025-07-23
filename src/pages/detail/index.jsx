@@ -5,6 +5,7 @@ import classes from "./styles.module.css";
 import { FaTrash, FaEdit } from "react-icons/fa";
 import { GlobalContext } from "../../context";
 import { Card, CardActions } from "../../components/card";
+import { useUser } from "@clerk/clerk-react";
 
 export default function Detail() {
     const { id } = useParams();
@@ -13,6 +14,7 @@ export default function Detail() {
     const [blog, setBlog] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const { isSignedIn } = useUser();
     
     // Track mouse position for gradient effect
     const handleMouseMove = (e) => {
@@ -77,10 +79,19 @@ export default function Detail() {
     }, [id, blogList]);
 
     async function handleEdit(blogItem) {
+        if (!isSignedIn) {
+            navigate("/sign-in", { state: { returnUrl: `/blog/${id}` } });
+            return;
+        }
         navigate("/add-blog", { state: { getCurrentBlogItem: blogItem } });
     }
     
     async function handleDeleteBlog(blogId) {
+        if (!isSignedIn) {
+            navigate("/sign-in", { state: { returnUrl: `/blog/${id}` } });
+            return;
+        }
+        
         try {
             const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5011/api/blogs/';
             const response = await axios.delete(`${API_BASE_URL}delete/${blogId}`);
@@ -112,10 +123,12 @@ export default function Detail() {
             <div className={classes.content}>
                 <p>{blog.description}</p>
             </div>
-            <CardActions>
-                <FaEdit onClick={() => handleEdit(blog)} size={22} />
-                <FaTrash onClick={() => handleDeleteBlog(blog._id)} size={22} />
-            </CardActions>
+            {isSignedIn && (
+                <CardActions>
+                    <FaEdit onClick={() => handleEdit(blog)} size={22} />
+                    <FaTrash onClick={() => handleDeleteBlog(blog._id)} size={22} />
+                </CardActions>
+            )}
         </div>
     );
 }

@@ -95,10 +95,25 @@
     transform: rotate(-45deg);
 }
 
+/* User info styles */
+.userInfo {
+    display: flex;
+    align-items: center;
+    margin-left: 16px;
+}
+
+.userAvatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--primary, #3b82f6);
+}
+
 /* Tubelight navbar positioning for desktop */
 .tubelightNav {
     position: absolute !important;
-    right: 20px;
+    right: 66px; /* Increased from 20px to 66px to make room for the Clerk avatar */
     top: 50% !important;
     transform: translateY(-50%) !important;
     left: auto !important;

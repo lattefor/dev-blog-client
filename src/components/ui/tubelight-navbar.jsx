@@ -24,13 +24,18 @@ export function NavBar({ items, className, onItemClick }) {
   const handleNavigation = (item) => {
     setActiveTab(item.name);
     
-    // Reset form when navigating to Add Blog
-    if (item.url === '/add-blog') {
-      setIsEdit(false);
-      setFormData({ title: "", description: "" });
+    // If the item has a custom onClick handler, use that instead of navigation
+    if (item.onClick) {
+      item.onClick();
+    } else {
+      // Reset form when navigating to Add Blog
+      if (item.url === '/add-blog') {
+        setIsEdit(false);
+        setFormData({ title: "", description: "" });
+      }
+      
+      navigate(item.url);
     }
-    
-    navigate(item.url);
     
     // Close mobile menu if onItemClick is provided
     if (onItemClick) {

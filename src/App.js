@@ -1,14 +1,13 @@
-import logo from "./logo.svg";
 import Header from "./components/header";
 import { Route, Routes } from "react-router-dom";
 import Home from "./pages/home";
 import AddNewBlog from "./pages/add-blog";
-import Contact from "./pages/contact";
 import Detail from "./pages/detail";
+import SignInPage from "./pages/sign-in";
+import SignUpPage from "./pages/sign-up";
+import ProtectedRoute from "./components/ProtectedRoute";
 import useLocalStorage from "./useLocalStorage";
 import { useEffect } from "react";
-// Using Unicode characters instead of SVG icons
-
 import { IoSunnyOutline, IoMoonOutline } from "react-icons/io5";
 
 function App() {
@@ -43,8 +42,13 @@ function App() {
 
         <Routes>
           <Route exact path="/" element={<Home />} />
-          <Route exact path="/add-blog" element={<AddNewBlog />} />
-          <Route exact path="/contact" element={<Contact />} />
+          <Route exact path="/add-blog" element={
+            <ProtectedRoute>
+              <AddNewBlog />
+            </ProtectedRoute>
+          } />
+          <Route path="/sign-in/*" element={<SignInPage />} />
+          <Route path="/sign-up/*" element={<SignUpPage />} />
           <Route path="/blog/:id" element={<Detail />} />
         </Routes>
       </div>
