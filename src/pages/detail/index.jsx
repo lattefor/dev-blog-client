@@ -147,7 +147,7 @@ export default function Detail() {
                 {blog.author && <p>Author: {blog.author}</p>}
             </div>
             <div className={classes.content}>
-                <p>{blog.description}</p>
+                <div style={{ whiteSpace: 'pre-wrap' }}>{blog.description}</div>
             </div>
             {isSignedIn && user && blog.userId === user.id && (
                 <CardActions>

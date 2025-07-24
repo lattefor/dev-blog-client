@@ -42,8 +42,10 @@
     z-index: 2;
 }
 
-.content p {
+.content > div {
     margin-bottom: 15px;
+    white-space: pre-wrap;
+    line-height: 1.8;
 }
 
 /* Dark mode adjustments */
