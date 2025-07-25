@@ -79,55 +79,15 @@ h1, h2 { margin-top: 0; }
     color: var(--text-primary-hover);
 }
 
-.moon-sun-toggle {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 45px;
-    height: 45px;
-    margin-right: 20px;
-    border-radius: 4px;
-    border: 1px solid transparent;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.moon-sun-toggle:hover {
-    color: #cfc89e !important; /* Using !important to override any other styles */
-    background-color: rgba(0, 0, 0, 0.05);
-    border-color: var(--border-color, #e2e8f0);
-}
-
-[data-theme='dark'] .moon-sun-toggle:hover {
-    color: #cfc89e !important;
-    background-color: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 255, 255, 0.2);
-}
-
-
-.theme-toggle-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: none;
-    border: 1px solid transparent;
-    color: var(--text-primary);
-    cursor: pointer;
-    padding: 0;
-    width: 45px;
-    height: 45px;
-    margin-right: 20px;
-    border-radius: 4px;
-    transition: all 0.2s ease;
-}
-
-.theme-toggle-button:hover {
-    background-color: var(--background-hover, rgba(0, 0, 0, 0.05));
-    border-color: var(--border-color, #e2e8f0);
-}
-
 .theme-icon {
     font-size: 24px;
     line-height: 1;
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 20px;
+}
+
+.theme-icon:hover {
+    color: rgb(216, 210, 20);
 }

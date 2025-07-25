@@ -25,11 +25,19 @@ function App() {
         <div className="header-container">
           <Header />
 
-          <button
+          <div
             className="moon-sun-toggle"
-            onClick={() => {
-              setTheme((the) => (the === "dark" ? "light" : "dark"));
+            onClick={() =>
+              setTheme((the) => (the === "dark" ? "light" : "dark"))
+            }
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                setTheme((the) => (the === "dark" ? "light" : "dark"));
+              }
             }}
+            aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
           >
             <span className="theme-icon">
               {theme === "dark" ? (
@@ -38,21 +46,25 @@ function App() {
                 <IoSunnyOutline size={22} />
               )}
             </span>
-          </button>
+          </div>
         </div>
 
         <Routes>
           <Route exact path="/" element={<Home />} />
-          <Route exact path="/add-blog" element={
-            <ProtectedRoute>
-              <AddNewBlog />
-            </ProtectedRoute>
-          } />
+          <Route
+            exact
+            path="/add-blog"
+            element={
+              <ProtectedRoute>
+                <AddNewBlog />
+              </ProtectedRoute>
+            }
+          />
           <Route path="/sign-in/*" element={<SignInPage />} />
           <Route path="/sign-up/*" element={<SignUpPage />} />
           <Route path="/blog/:id" element={<Detail />} />
         </Routes>
-        
+
         <Footer />
       </div>
     </div>
