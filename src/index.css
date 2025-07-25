@@ -88,6 +88,13 @@ h1, h2 { margin-top: 0; }
     margin-right: 30px;
 }
 
+@media (max-width: 768px) {
+    .theme-icon {
+        font-size: 34px;
+        margin-right: 20px;
+    }
+}
+
 .theme-icon:hover {
     color: rgb(216, 210, 20);
 }

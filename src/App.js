@@ -41,9 +41,9 @@ function App() {
           >
             <span className="theme-icon">
               {theme === "dark" ? (
-                <IoMoonOutline size={22} />
+                <IoMoonOutline />
               ) : (
-                <IoSunnyOutline size={22} />
+                <IoSunnyOutline />
               )}
             </span>
           </div>
