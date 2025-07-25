@@ -45,10 +45,17 @@ export function ModernSelect({ options, value, onChange, placeholder }) {
   
   return (
     <div className="modern-select-container" ref={selectRef}>
-      <button 
-        type="button"
+      <div 
         className="modern-select-trigger"
         onClick={() => setIsOpen(!isOpen)}
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            setIsOpen(!isOpen);
+          }
+        }}
         aria-haspopup="listbox"
         aria-expanded={isOpen}
       >
@@ -56,7 +63,7 @@ export function ModernSelect({ options, value, onChange, placeholder }) {
           {selectedLabel}
         </span>
         <FaChevronDown className={`modern-select-icon ${isOpen ? 'open' : ''}`} />
-      </button>
+      </div>
       
       {isOpen && (
         <div className="modern-select-dropdown">
