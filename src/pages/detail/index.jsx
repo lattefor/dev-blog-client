@@ -143,18 +143,21 @@ export default function Detail() {
         >
             <h1>{blog.title}</h1>
             <div className={classes.metadata}>
-                <p>Posted: {new Date(blog.date).toLocaleDateString()}</p>
-                {blog.author && <p>Author: {blog.author}</p>}
+                <div className={classes.metaInfo}>
+                    <p>Posted: {new Date(blog.date).toLocaleDateString()}</p>
+                    {blog.author && <p>Author: {blog.author}</p>}
+                </div>
+                {isSignedIn && user && blog.userId === user.id && (
+                    <div className={classes.actionButtons}>
+                        <FaEdit onClick={() => handleEdit(blog)} size={22} />
+                        <FaTrash onClick={() => handleDeleteBlog(blog._id)} size={22} />
+                    </div>
+                )}
             </div>
             <div className={classes.content}>
                 <div style={{ whiteSpace: 'pre-wrap' }}>{blog.description}</div>
             </div>
-            {isSignedIn && user && blog.userId === user.id && (
-                <CardActions>
-                    <FaEdit onClick={() => handleEdit(blog)} size={22} />
-                    <FaTrash onClick={() => handleDeleteBlog(blog._id)} size={22} />
-                </CardActions>
-            )}
+
         </div>
     );
 }
