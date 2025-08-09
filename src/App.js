@@ -10,6 +10,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import useLocalStorage from "./useLocalStorage";
 import { useEffect } from "react";
 import { IoSunnyOutline, IoMoonOutline } from "react-icons/io5";
+import { ToastProvider } from "./context/ToastContext";
 
 function App() {
   const [theme, setTheme] = useLocalStorage("theme", "dark");
@@ -20,7 +21,8 @@ function App() {
   }, [theme]);
 
   return (
-    <div className="dark-light-mode" data-theme={theme}>
+    <ToastProvider>
+      <div className="dark-light-mode" data-theme={theme}>
       <div className="container">
         <div className="header-container">
           <Header />
@@ -68,6 +70,7 @@ function App() {
         <Footer />
       </div>
     </div>
+    </ToastProvider>
   );
 }
 
