@@ -8,9 +8,6 @@ import { Textarea } from "../../components/ui/textarea";
 import { Button } from "../../components/ui/button";
 import { Label } from "../../components/ui/label";
 import { useUser, useAuth } from "@clerk/clerk-react";
-import { useDropzone } from "react-dropzone";
-import { generateClientDropzoneAccept, generatePermittedFileTypes } from "uploadthing/client";
-import { useUploadThing } from "../../utils/uploadthing";
 import { useToast } from "../../context/ToastContext";
 
 export default function AddNewBlog() {
@@ -19,36 +16,45 @@ export default function AddNewBlog() {
   const navigate = useNavigate();
   const location = useLocation();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [files, setFiles] = useState([]);
-  const [isUploading, setIsUploading] = useState(false);
+  const [uploadInProgress, setUploadInProgress] = useState(false);
   
-  // Debug: Log when files state changes
-  useEffect(() => {
-    console.log('Files state changed:', files);
-  }, [files]);
+
   const { user, isSignedIn } = useUser();
   const { getToken } = useAuth();
   const { showToast } = useToast();
   
-  const { startUpload, routeConfig } = useUploadThing("imageUploader");
-  
-  const onDrop = useCallback((acceptedFiles) => {
-    console.log("Files dropped:", acceptedFiles);
-    setFiles(acceptedFiles);
-    // Just store the files, don't upload yet
-    if (acceptedFiles.length > 0) {
-      showToast(`📎 ${acceptedFiles.length} file(s) ready to upload`, 'info');
-    }
-  }, [showToast]);
-  
-  console.log('Route config:', routeConfig);
-  
-  const { getRootProps, getInputProps } = useDropzone({
-    onDrop,
-    accept: routeConfig ? generateClientDropzoneAccept(
-      generatePermittedFileTypes(routeConfig).fileTypes,
-    ) : undefined,
-  });
+  // Cloudinary upload function
+  const handleImageUpload = () => {
+    setUploadInProgress(true);
+    
+    // Create Cloudinary upload widget
+    window.cloudinary.openUploadWidget({
+      cloudName: 'ddwt3aqgs', // Replace with your Cloudinary cloud name
+      uploadPreset: 'devlogs', // You'll need to create this in Cloudinary
+      sources: ['local', 'url', 'camera'],
+      multiple: false,
+      maxFiles: 1,
+      resourceType: 'image',
+    }, (error, result) => {
+      setUploadInProgress(false);
+      
+      if (error) {
+        console.error('Upload error:', error);
+        showToast('Upload failed', 'error');
+        return;
+      }
+      
+      if (result.event === 'success') {
+        const imageUrl = result.info.secure_url;
+        console.log('Image uploaded:', imageUrl);
+        setFormData(prev => ({
+          ...prev,
+          imageUrl: imageUrl,
+        }));
+        showToast('✅ Image uploaded successfully!', 'success');
+      }
+    });
+  };
   
   // Reset form when navigating directly to the page
   useEffect(() => {
@@ -68,26 +74,33 @@ export default function AddNewBlog() {
   const handleSaveBlogToDatabase = useCallback(async () => {
     if (isSubmitting) return;
     
-    console.log('Publish button clicked. Files state:', files);
+    // Don't allow publish if upload is still in progress
+    if (uploadInProgress) {
+      showToast('Please wait for image upload to complete', 'info');
+      return;
+    }
+    
+    console.log('Publish button clicked.');
+    console.log('📊 Current formData state:', formData);
     
     try {
       setIsSubmitting(true);
       
       let imageUrl = formData.imageUrl;
       
-      // Upload image first if files are selected
-      if (files.length > 0) {
-        console.log('Uploading image during publish...', files);
-        showToast("📤 Uploading image...", 'info');
-        
-        // Start upload but don't wait for it - just continue with blog creation
-        startUpload(files);
-        
-        // Just assume upload will work and continue
-        showToast("✅ Image upload started, blog created!", 'success');
-      }
+      // Image should already be uploaded when files were dropped
+      // The imageUrl will be set by the upload callback
       
       console.log('Using imageUrl:', imageUrl);
+      
+      const blogData = {
+        title: formData.title,
+        description: formData.description,
+        author: isSignedIn ? (user.fullName || user.username || user.emailAddresses[0]?.emailAddress || 'Unknown') : 'Unknown',
+        imageUrl: imageUrl
+      };
+      
+      console.log('Blog data being sent to server:', blogData);
       
       // Get authentication token
       const token = await getToken();
@@ -111,13 +124,7 @@ export default function AddNewBlog() {
           )
         : await axios.post(
             `${process.env.REACT_APP_API_BASE_URL}add`, 
-            {
-              title: formData.title,
-              description: formData.description,
-              author: isSignedIn ? (user.fullName || user.username || user.emailAddresses[0]?.emailAddress || 'Unknown') : 'Unknown',
-              imageUrl: imageUrl
-              // userId is now extracted from the token on the server
-            },
+            blogData,
             { headers }
           );
 
@@ -131,6 +138,7 @@ export default function AddNewBlog() {
           userId: isSignedIn ? user.id : '',
           imageUrl: '',
         });
+        // Files no longer needed with Cloudinary
         // Delay navigation slightly to allow upload callbacks to complete
         setTimeout(() => {
           navigate("/");
@@ -141,7 +149,7 @@ export default function AddNewBlog() {
     } finally {
       setIsSubmitting(false);
     }
-  }, [formData, isEdit, location, navigate, setFormData, setIsEdit, isSubmitting, isSignedIn, user, getToken, files, startUpload, showToast]);
+  }, [formData, isEdit, location, navigate, setFormData, setIsEdit, isSubmitting, isSignedIn, user, getToken, showToast, uploadInProgress]);
 
   useEffect(() => {
     if (location.state) {
@@ -196,23 +204,27 @@ export default function AddNewBlog() {
         
         <div className={classes.formGroup}>
           <Label>Blog Image</Label>
-          <div {...getRootProps()} style={{
+          <div style={{
             border: '2px dashed #ccc',
             borderRadius: '8px',
             padding: '20px',
             textAlign: 'center',
-            cursor: 'pointer',
             minHeight: '100px',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center'
           }}>
-            <input {...getInputProps()} />
-            {files.length > 0 ? (
-              <p>{files.length} file(s) selected: {files[0]?.name}</p>
-            ) : (
-              <p>Drop image files here or click to select</p>
+            <Button 
+              type="button"
+              onClick={handleImageUpload}
+              disabled={uploadInProgress}
+              variant="outline"
+            >
+              {uploadInProgress ? 'Uploading...' : 'Upload Image'}
+            </Button>
+            {formData.imageUrl && (
+              <p style={{ marginTop: '10px', color: 'green' }}>✅ Image uploaded</p>
             )}
           </div>
         </div>

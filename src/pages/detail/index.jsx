@@ -154,9 +154,19 @@ export default function Detail() {
                     </div>
                 )}
             </div>
-            <div className={classes.content}>
-                <div style={{ whiteSpace: 'pre-wrap' }}>{blog.description}</div>
-            </div>
+                        <div className={classes.content}>
+                                <div style={{ whiteSpace: 'pre-wrap' }}>{blog.description}</div>
+                        </div>
+                        
+                        {blog.imageUrl && (
+                            <div className={classes.imageContainer}>
+                                <img 
+                                    src={blog.imageUrl} 
+                                    alt={blog.title}
+                                    className={classes.blogImage}
+                                />
+                            </div>
+                        )}
 
         </div>
     );

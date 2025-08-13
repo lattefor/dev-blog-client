@@ -73,6 +73,27 @@
     line-height: 1.8;
 }
 
+.imageContainer {
+    width: 50%;
+    margin: 24px auto;
+    position: relative;
+    z-index: 2;
+}
+
+.blogImage {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    transition: transform 0.2s ease;
+}
+
+.blogImage:hover {
+    transform: scale(1.02);
+}
+
+
+
 /* Dark mode adjustments */
 [data-theme='dark'] .wrapper {
     border-color: rgba(255, 255, 255, 0.1);
@@ -131,5 +152,9 @@
     
     .actionButtons {
         justify-content: flex-start;
+    }
+    
+    .imageContainer {
+        width: 80%;
     }
 }
