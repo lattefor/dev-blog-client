@@ -80,8 +80,7 @@ export default function AddNewBlog() {
       return;
     }
     
-    console.log('Publish button clicked.');
-    console.log('📊 Current formData state:', formData);
+
     
     try {
       setIsSubmitting(true);
@@ -91,16 +90,12 @@ export default function AddNewBlog() {
       // Image should already be uploaded when files were dropped
       // The imageUrl will be set by the upload callback
       
-      console.log('Using imageUrl:', imageUrl);
-      
       const blogData = {
         title: formData.title,
         description: formData.description,
         author: isSignedIn ? (user.fullName || user.username || user.emailAddresses[0]?.emailAddress || 'Unknown') : 'Unknown',
         imageUrl: imageUrl
       };
-      
-      console.log('Blog data being sent to server:', blogData);
       
       // Get authentication token
       const token = await getToken();
@@ -205,8 +200,6 @@ export default function AddNewBlog() {
         <div className={classes.formGroup}>
           <Label>Blog Image</Label>
           <div style={{
-            border: '2px dashed #ccc',
-            borderRadius: '8px',
             padding: '20px',
             textAlign: 'center',
             minHeight: '100px',
@@ -215,17 +208,27 @@ export default function AddNewBlog() {
             alignItems: 'center',
             justifyContent: 'center'
           }}>
+            {formData.imageUrl && (
+              <img 
+                src={formData.imageUrl} 
+                alt="Preview"
+                style={{
+                  width: window.innerWidth <= 768 ? '70%' : '50%',
+                  height: 'auto',
+                  borderRadius: '8px',
+                  marginBottom: '15px',
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+                }}
+              />
+            )}
             <Button 
               type="button"
               onClick={handleImageUpload}
               disabled={uploadInProgress}
-              variant="outline"
+              variant="default"
             >
-              {uploadInProgress ? 'Uploading...' : 'Upload Image'}
+              {uploadInProgress ? 'Uploading...' : 'Select Blog Image'}
             </Button>
-            {formData.imageUrl && (
-              <p style={{ marginTop: '10px', color: 'green' }}>✅ Image uploaded</p>
-            )}
           </div>
         </div>
         

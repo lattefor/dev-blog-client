@@ -1,9 +1,11 @@
 import React, { useEffect, useState, useContext } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { cn } from "../../utils";
 import "./tubelight-navbar.css";
 import { GlobalContext } from "../../context";
+
+// Simple utility to combine class names
+const cn = (...classes) => classes.filter(Boolean).join(' ');
 
 export function NavBar({ items, className, onItemClick }) {
   const [activeTab, setActiveTab] = useState(items[0].name);
