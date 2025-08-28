@@ -165,7 +165,7 @@ export default function AddNewBlog() {
       <h1>{isEdit ? "Edit Blog" : "Create New Blog"}</h1>
       <div className={classes.formWrapper}>
         <div className={classes.formGroup}>
-          <Label htmlFor="title">Blog Title</Label>
+          <Label htmlFor="title" className={classes.label}>Blog Title</Label>
           <Input
             name="title"
             placeholder="Enter a descriptive title"
@@ -181,7 +181,7 @@ export default function AddNewBlog() {
         </div>
         
         <div className={classes.formGroup}>
-          <Label htmlFor="description">Blog Content</Label>
+          <Label htmlFor="description" className={classes.label}>Blog Content</Label>
           <Textarea
             name="description"
             placeholder="Write your blog content here..."
@@ -198,7 +198,7 @@ export default function AddNewBlog() {
         </div>
         
         <div className={classes.formGroup}>
-          <Label>Blog Image</Label>
+          <Label className={classes.label}>Blog Image</Label>
           <div style={{
             padding: '20px',
             textAlign: 'center',

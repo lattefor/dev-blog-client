@@ -43,6 +43,11 @@
   z-index: 2;
 }
 
+.formGroup > .label {
+  font-weight: bold;
+  color: rgb(99, 211, 196)
+}
+
 .formGroup label {
   font-weight: 500;
   font-size: 0.875rem;
