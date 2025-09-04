@@ -17,6 +17,7 @@ export default function AddNewBlog() {
   const location = useLocation();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [uploadInProgress, setUploadInProgress] = useState(false);
+  const [errors, setErrors] = useState({});
   
 
   const { user, isSignedIn } = useUser();
@@ -73,6 +74,22 @@ export default function AddNewBlog() {
 
   const handleSaveBlogToDatabase = useCallback(async () => {
     if (isSubmitting) return;
+    
+    // Validate required fields
+    const newErrors = {};
+    if (!formData.title.trim()) {
+      newErrors.title = true;
+    }
+    if (!formData.description.trim()) {
+      newErrors.description = true;
+    }
+    
+    setErrors(newErrors);
+    
+    // If there are errors, don't proceed
+    if (Object.keys(newErrors).length > 0) {
+      return;
+    }
     
     // Don't allow publish if upload is still in progress
     if (uploadInProgress) {
@@ -144,7 +161,7 @@ export default function AddNewBlog() {
     } finally {
       setIsSubmitting(false);
     }
-  }, [formData, isEdit, location, navigate, setFormData, setIsEdit, isSubmitting, isSignedIn, user, getToken, showToast, uploadInProgress]);
+  }, [formData, isEdit, location, navigate, setFormData, setIsEdit, isSubmitting, isSignedIn, user, getToken, showToast, uploadInProgress, errors]);
 
   useEffect(() => {
     if (location.state) {
@@ -165,34 +182,48 @@ export default function AddNewBlog() {
       <h1>{isEdit ? "Edit Blog" : "Create New Blog"}</h1>
       <div className={classes.formWrapper}>
         <div className={classes.formGroup}>
-          <Label htmlFor="title" className={classes.label}>Blog Title</Label>
+          <Label htmlFor="title" className={classes.label}>
+            Blog Title
+            {errors.title && <span style={{ color: 'red', marginLeft: '8px' }}>*Required</span>}
+          </Label>
           <Input
             name="title"
             placeholder="Enter a descriptive title"
             id="title"
             value={formData.title}
-            onChange={(e) =>
+            onChange={(e) => {
               setFormData({
                 ...formData,
                 title: e.target.value,
-              })
-            }
+              });
+              // Clear error when user starts typing
+              if (errors.title) {
+                setErrors(prev => ({ ...prev, title: false }));
+              }
+            }}
           />
         </div>
         
         <div className={classes.formGroup}>
-          <Label htmlFor="description" className={classes.label}>Blog Content</Label>
+          <Label htmlFor="description" className={classes.label}>
+            Blog Content
+            {errors.description && <span style={{ color: 'red', marginLeft: '8px' }}>*Required</span>}
+          </Label>
           <Textarea
             name="description"
             placeholder="Write your blog content here..."
             id="description"
             value={formData.description}
-            onChange={(event) =>
+            onChange={(event) => {
               setFormData({
                 ...formData,
                 description: event.target.value,
-              })
-            }
+              });
+              // Clear error when user starts typing
+              if (errors.description) {
+                setErrors(prev => ({ ...prev, description: false }));
+              }
+            }}
             rows={8}
           />
         </div>

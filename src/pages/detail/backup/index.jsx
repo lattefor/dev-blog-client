@@ -137,44 +137,37 @@ export default function Detail() {
     if (!blog) return <div className={classes.wrapper}><p>Blog not found</p></div>;
 
     return (
-        <div className={classes.container}>
-            {/* Section 1: Newspaper name with side boxes */}
-            <div className={classes.masthead}>
-                <div className={classes.sideBox}>Only Your Best<br />Headlines</div>
-                <div className={classes.title}>The Breaking News</div>
-                <div className={classes.sideBox}>Limited Copy</div>
+        <div 
+            className={classes.wrapper}
+            onMouseMove={handleMouseMove}
+        >
+            <h1>{blog.title}</h1>
+            <div className={classes.metadata}>
+                <div className={classes.metaInfo}>
+                    <p>Posted: {new Date(blog.date).toLocaleDateString()}</p>
+                    {blog.author && <p>Author: {blog.author}</p>}
+                </div>
+                {isSignedIn && user && blog.userId === user.id && (
+                    <div className={classes.actionButtons}>
+                        <FaEdit onClick={() => handleEdit(blog)} size={22} />
+                        <FaTrash onClick={() => handleDeleteBlog(blog._id)} size={22} />
+                    </div>
+                )}
             </div>
-            <hr className={classes.hr} />
-
-            {/* Section 2: Meta information */}
-            <div className={classes.metaInfo}>
-                <div>Posted: {new Date(blog.date).toLocaleDateString()}</div>
-                <div>
-                    {isSignedIn && user && blog.userId === user.id && (
-                        <div className={classes.actionButtons}>
-                            <FaEdit onClick={() => handleEdit(blog)} size={22} style={{ marginRight: '10px', cursor: 'pointer' }} />
-                            <FaTrash onClick={() => handleDeleteBlog(blog._id)} size={22} style={{ cursor: 'pointer' }} />
+                        <div className={classes.content}>
+                                <div style={{ whiteSpace: 'pre-wrap' }}>{blog.description}</div>
                         </div>
-                    )}
-                </div>
-            </div>
-            <hr className={classes.hr} />
-            <hr className={classes.hr} />
+                        
+                        {blog.imageUrl && (
+                            <div className={classes.imageContainer}>
+                                <img 
+                                    src={blog.imageUrl} 
+                                    alt={blog.title}
+                                    className={classes.blogImage}
+                                />
+                            </div>
+                        )}
 
-            {/* Section 3: Headline */}
-            <div className={classes.headlineSection}>
-                <div className={classes.writer}>Writer : {blog.author || 'UNKNOWN AUTHOR'}</div>
-                <div className={classes.headline}>{blog.title}</div>
-                <div className={classes.description} style={{ whiteSpace: 'pre-wrap' }}>{blog.description}</div>
-            </div>
-            <hr className={classes.hr} />
-
-            {/* Section 4: Main image */}
-            {blog.imageUrl && (
-                <div className={classes.mainImage}>
-                    <img src={blog.imageUrl} alt={blog.title} />
-                </div>
-            )}
         </div>
     );
 }
