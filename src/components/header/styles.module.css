@@ -1,3 +1,10 @@
+@font-face {
+    font-family: 'Raleway';
+    src: url('../../fonts/Raleway/static/Raleway-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
 .header {
     display: flex;
     padding: 20px;
@@ -15,7 +22,9 @@
 }
 
 .header h3 {
+    font-family: 'Raleway', sans-serif;
     font-size: 40px;
+    font-weight: bold;
     margin: 0;
 }
 
