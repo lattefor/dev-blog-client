@@ -68,7 +68,7 @@ h1, h2 { margin-top: 0; }
     text-decoration: none;
     justify-content: center;
     align-items: center; 
-    margin-bottom: 25px;
+    margin: 10px;
 }
 
 .header-container li {
