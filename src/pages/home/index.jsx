@@ -10,10 +10,6 @@ import { Card, CardContent, CardTitle, CardMeta, CardDescription } from "../../c
 
 export default function Home() {
   const [searchTerm, setSearchTerm] = useState("");
-  // Get sort option from sessionStorage or default to "newest"
-  const [sortOption, setSortOption] = useState(() => {
-    return sessionStorage.getItem("blogSortOption") || "newest";
-  });
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
   
   // Track mouse position for gradient effect
@@ -27,7 +23,7 @@ export default function Home() {
     card.style.setProperty('--mouse-y', `${y}px`);
   };
   
-  const { blogList, setBlogList, pending, setPending } =
+  const { blogList, setBlogList, pending, setPending, sortOption, setSortOption } =
     useContext(GlobalContext);
 
   const navigate = useNavigate();

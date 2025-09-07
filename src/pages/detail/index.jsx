@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import classes from "./styles.module.css";
@@ -10,12 +10,48 @@ import { useUser, useAuth } from "@clerk/clerk-react";
 export default function Detail() {
     const { id } = useParams();
     const navigate = useNavigate();
-    const { blogList, setBlogList } = useContext(GlobalContext);
+    const { blogList, setBlogList, sortOption } = useContext(GlobalContext);
     const [blog, setBlog] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const { isSignedIn, user } = useUser();
     const { getToken } = useAuth();
+    
+    // Create sorted blog list based on current sort option
+    const sortedBlogList = useMemo(() => {
+        if (!blogList || !blogList.length) return [];
+        
+        const blogs = [...blogList];
+        switch (sortOption) {
+            case 'newest':
+                return blogs.sort((a, b) => new Date(b.date) - new Date(a.date));
+            case 'oldest':
+                return blogs.sort((a, b) => new Date(a.date) - new Date(b.date));
+            case 'a-z':
+                return blogs.sort((a, b) => a.title.localeCompare(b.title));
+            case 'z-a':
+                return blogs.sort((a, b) => b.title.localeCompare(a.title));
+            default:
+                return blogs;
+        }
+    }, [blogList, sortOption]);
+    
+    // Find current blog position and next/prev blogs
+    const currentIndex = sortedBlogList ? sortedBlogList.findIndex(blog => blog._id === id) : -1;
+    const previousBlog = currentIndex > 0 ? sortedBlogList[currentIndex - 1] : null;
+    const nextBlog = currentIndex >= 0 && currentIndex < sortedBlogList.length - 1 ? sortedBlogList[currentIndex + 1] : null;
+    
+    const goToPrevious = () => {
+        if (previousBlog) {
+            navigate(`/blog/${previousBlog._id}`);
+        }
+    };
+    
+    const goToNext = () => {
+        if (nextBlog) {
+            navigate(`/blog/${nextBlog._id}`);
+        }
+    };
     
     // Track mouse position for gradient effect
     const handleMouseMove = (e) => {
@@ -138,6 +174,30 @@ export default function Detail() {
 
     return (
         <div className={classes.container}>
+            {/* Navigation buttons */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
+                <button 
+                    onClick={goToPrevious} 
+                    disabled={!previousBlog}
+                    style={{ 
+                        opacity: previousBlog ? 1 : 0.5, 
+                        cursor: previousBlog ? 'pointer' : 'not-allowed' 
+                    }}
+                >
+                    Prev
+                </button>
+                <button 
+                    onClick={goToNext} 
+                    disabled={!nextBlog}
+                    style={{ 
+                        opacity: nextBlog ? 1 : 0.5, 
+                        cursor: nextBlog ? 'pointer' : 'not-allowed' 
+                    }}
+                >
+                    Next
+                </button>
+            </div>
+            
             {/* Section 1: Newspaper name with side boxes */}
             <div className={classes.masthead}>
                 <div className={classes.sideBox}>Only Your Best<br />Headlines</div>

@@ -13,6 +13,9 @@ export default function GlobalStates({ children }) {
   const [blogList, setBlogList] = useState([]);
   const [pending, setPending] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
+  const [sortOption, setSortOption] = useState(() => {
+    return sessionStorage.getItem("blogSortOption") || "newest";
+  });
 
   return (
     <GlobalContext.Provider
@@ -25,6 +28,8 @@ export default function GlobalStates({ children }) {
         setPending,
         isEdit,
         setIsEdit,
+        sortOption,
+        setSortOption,
       }}
     >
       {children}
