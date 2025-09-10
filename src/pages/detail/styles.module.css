@@ -40,7 +40,7 @@
     border: 2px solid black;
     font-family: "Times New Roman", Times, serif;
     line-height: 1.4;
-    background: #dbdbcedb;
+    background: #e8e8dedb;
     color: black;
 }
 
@@ -64,7 +64,6 @@
     flex: 1;
     font-family: 'UnifrakturMaguntia', serif;
     font-size: 3.6rem;
-    font-weight: 900;
 }
 
 .hr {
@@ -205,4 +204,39 @@
 
 [data-theme='dark'] .actionButtons svg:hover {
     color: var(--primary, #3b82f6);
+}
+
+/* Navigation button styles */
+.navButton {
+    cursor: pointer;
+    color: black;
+    font-family: 'Raleway', sans-serif !important;
+    font-size: 1rem !important;
+    transition: color 0.2s ease;
+}
+
+.navButton:hover {
+    color: #b8860b; /* dark gold */
+}
+
+.navButton.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.navButton.disabled:hover {
+    color: black; /* no hover effect when disabled */
+}
+
+/* Dark mode navigation buttons */
+[data-theme='dark'] .navButton {
+    color: white;
+}
+
+[data-theme='dark'] .navButton:hover {
+    color: #989840; /* light yellow */
+}
+
+[data-theme='dark'] .navButton.disabled:hover {
+    color: white; /* no hover effect when disabled */
 }

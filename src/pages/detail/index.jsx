@@ -175,34 +175,24 @@ export default function Detail() {
     return (
         <div className={classes.container}>
             {/* Navigation buttons */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
-                <button 
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <span 
                     onClick={goToPrevious} 
-                    disabled={!previousBlog}
-                    style={{ 
-                        opacity: previousBlog ? 1 : 0.5, 
-                        cursor: previousBlog ? 'pointer' : 'not-allowed' 
-                    }}
+                    className={`${classes.navButton} ${!previousBlog ? classes.disabled : ''}`}
                 >
-                    Prev
-                </button>
-                <button 
+                    &lt; Prev
+                </span>
+                <span 
                     onClick={goToNext} 
-                    disabled={!nextBlog}
-                    style={{ 
-                        opacity: nextBlog ? 1 : 0.5, 
-                        cursor: nextBlog ? 'pointer' : 'not-allowed' 
-                    }}
+                    className={`${classes.navButton} ${!nextBlog ? classes.disabled : ''}`}
                 >
-                    Next
-                </button>
+                    Next &gt;
+                </span>
             </div>
             
             {/* Section 1: Newspaper name with side boxes */}
             <div className={classes.masthead}>
-                <div className={classes.sideBox}>Only Your Best<br />Headlines</div>
                 <div className={classes.title}>The Breaking News</div>
-                <div className={classes.sideBox}>Limited Copy</div>
             </div>
             <hr className={classes.hr} />
 
